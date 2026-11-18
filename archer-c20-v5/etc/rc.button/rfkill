@@ -1,0 +1,31 @@
+#!/bin/sh
+# ==============================================================================
+# Custom WPS / RFKILL Physical Button Handler for TP-Link Archer C20 v5
+# ==============================================================================
+# Problem:
+#   On TP-Link Archer C20 v5, the back button is a dual WPS / Wi-Fi toggle.
+#   Holding or pressing it triggers OpenWrt's default /etc/rc.button/rfkill,
+#   which unconditionally disables all wireless radios, bringing down the entire
+#   household mesh!
+#
+# Solution:
+#   This custom handler intercepts button releases, logs the event, flashes the
+#   green WPS LED for 10 seconds to give visual feedback, and delegates to the
+#   safe /etc/rc.button/wps script instead of killing the radios.
+# ==============================================================================
+
+[ "${ACTION}" = "released" ] || exit 0
+
+logger -t button-handler "Physical button pressed: rfkill redirected to WPS - Wi-Fi preserved"
+
+(
+	echo timer > /sys/class/leds/green:wps/trigger 2>/dev/null
+	echo 250 > /sys/class/leds/green:wps/delay_on 2>/dev/null
+	echo 250 > /sys/class/leds/green:wps/delay_off 2>/dev/null
+	sleep 10
+	echo none > /sys/class/leds/green:wps/trigger 2>/dev/null
+	echo 0 > /sys/class/leds/green:wps/brightness 2>/dev/null
+) &
+
+BUTTON="wps" /etc/rc.button/wps
+exit 0

@@ -1,0 +1,10 @@
+# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+
+# Restart Stubby after NTP sync to ensure TLS certificates validate properly
+(sleep 15 && /etc/init.d/stubby restart) &
+
+# Inject 802.11k neighbor reports into hostapd
+(sleep 10 && /usr/sbin/set-rrm-neighbors.sh) &
+
+exit 0

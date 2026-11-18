@@ -1,0 +1,43 @@
+# ==============================================================================
+# Git Ignore Rules for home-network-openwrt-mesh
+# ==============================================================================
+
+# Private Network & Device Data (Contains real MACs, names, credentials)
+reservations.txt
+import_hosts.sh
+sync_reservations_to_c20.py
+setup_rrm_sync.py
+set_rrm_c20.sh
+set_rrm_wr841.sh
+
+# Firmware Binaries, Archives & Intermediate Files
+*.bin
+*.tar.xz
+*.tar.gz
+*.squashfs
+*.gz
+Packages
+Packages.gz
+Packages.manifest
+tp_recovery.bin
+
+# Temporary & Log Files
+*.log
+*.tmp
+*.bak
+*.orig
+wget-log*
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# OS & Editor Artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
